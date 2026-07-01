@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consulting | Prime Green at Arlington</title>
+<meta name="description" content="Independent solar and renewable energy planning, plus climate and clean energy education consulting, based in Arlington, VA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="prime.css">
+<style>
+/* page-specific */
+.c-hero{padding:170px 0 80px;text-align:center;position:relative;overflow:hidden}
+.c-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(640px 340px at 50% 0%,rgba(233,161,59,.13),transparent 65%)}
+.c-hero .wrap{position:relative}
+.c-hero h1{font-size:clamp(2rem,4.3vw,3.2rem);line-height:1.18;max-width:16em;margin:8px auto 22px}
+.c-hero .sub{color:var(--soft);font-size:1.1rem;max-width:38em;margin:0 auto 32px}
+.hero-meta{display:flex;gap:8px 26px;flex-wrap:wrap;justify-content:center;margin-top:38px;font-style:italic;font-size:.92rem;color:var(--soft)}
+.hero-meta span{display:flex;align-items:center;gap:8px}
+.hero-meta i{width:8px;height:8px;border-radius:50%;background:var(--sun);display:inline-block;flex:none}
+
+.tracks{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:880px){.tracks{grid-template-columns:1fr}}
+.track{padding:0 40px}
+.track:first-child{padding-left:0}
+.track+.track{border-left:1px solid var(--rule)}
+@media(max-width:880px){.track{padding:28px 0;border-left:0!important}.track+.track{border-top:1px solid var(--rule)}}
+.track h3{font-size:1.35rem;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.track h3 svg{width:34px;height:34px;flex:none}
+.track>p{margin-bottom:18px;color:var(--soft)}
+.track ul{list-style:disc;padding-left:20px;display:grid;gap:10px;color:var(--soft);font-size:.95rem}
+.track li::marker{color:var(--green)}
+.track li b{color:var(--ink)}
+.who{margin-top:20px;font-style:italic;font-size:.92rem;color:var(--faint)}
+.who b{color:var(--green);font-weight:600;font-style:normal}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;counter-reset:step}
+@media(max-width:880px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.steps{grid-template-columns:1fr}}
+.step{counter-increment:step;text-align:center}
+.step::before{content:counter(step);display:flex;align-items:center;justify-content:center;width:52px;height:52px;margin:0 auto 14px;border-radius:50%;background:rgba(46,125,79,.1);color:var(--green-deep);font-family:var(--serif);font-size:1.4rem}
+.step h3{font-size:1.05rem;margin-bottom:6px}
+.step p{color:var(--soft);font-size:.92rem}
+
+.fit{display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:900px;margin:0 auto}
+@media(max-width:880px){.fit{grid-template-columns:1fr}}
+.fit-col{padding:0 40px}
+.fit-col:first-child{padding-left:0}
+.fit-col+.fit-col{border-left:1px solid var(--rule)}
+@media(max-width:880px){.fit-col{padding:24px 0;border-left:0!important}.fit-col+.fit-col{border-top:1px solid var(--rule)}}
+.fit-col h3{margin-bottom:14px}
+.fit-col ul{list-style:disc;padding-left:20px;display:grid;gap:10px;color:var(--soft);font-size:.95rem}
+.fit-col li::marker{color:var(--green)}
+.fit-col.nope li::marker{color:var(--faint)}
+.fit-col.nope h3{color:var(--soft)}
+
+.about{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center;max-width:980px;margin:0 auto}
+@media(max-width:880px){.about{grid-template-columns:1fr}}
+.portrait{border:1px solid var(--rule);border-radius:3px;overflow:hidden;position:relative;background:var(--white);box-shadow:0 10px 34px rgba(34,56,44,.08)}
+.portrait svg{display:block;width:100%;height:auto}
+.portrait figcaption{position:absolute;bottom:0;left:0;right:0;padding:10px 18px;font-style:italic;font-size:.82rem;color:var(--soft);border-top:1px solid var(--rule);background:rgba(250,246,236,.92)}
+.about .bio p{color:var(--soft);margin-bottom:16px}
+.about .bio p b{color:var(--ink)}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start;max-width:980px;margin:0 auto}
+@media(max-width:880px){.contact-grid{grid-template-columns:1fr}}
+.cform{display:grid;gap:14px}
+.cform label{font-weight:700;font-size:.88rem;color:var(--ink)}
+.cform input,.cform select,.cform textarea{width:100%;background:#fff;border:1px solid var(--rule);border-radius:2px;color:var(--ink);padding:12px 15px;font-family:var(--sans);font-size:.96rem;outline:none;transition:border-color .2s;margin-top:5px}
+.cform input:focus,.cform select:focus,.cform textarea:focus{border-color:var(--green)}
+.cform textarea{min-height:120px;resize:vertical}
+.contact-side p{color:var(--soft);margin-bottom:18px}
+.contact-side .email{font-family:var(--serif);font-size:1.15rem;color:var(--green-deep);display:block;margin-bottom:4px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="22" r="9" fill="#e9a13b"/>
+        <polygon points="22,16.5 16,23.5 19.3,23.5 18,27.5 24,20.5 20.7,20.5" fill="#faf6ec"/>
+        <g stroke="#e9a13b" stroke-width="2" stroke-linecap="round">
+          <path d="M20 7v4M9 11l2.8 2.8M31 11l-2.8 2.8M5 22h4M31 22h4"/>
+        </g>
+        <path d="M8 33c8-5 16-5 24 0" stroke="#2e7d4f" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="brand-name">Prime Green<small>at Arlington</small></span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html#solar">Solar</a></li>
+      <li><a href="index.html#map">The Map</a></li>
+      <li><a href="index.html#recycling">Recycling</a></li>
+      <li><a href="index.html#schools">Schools</a></li>
+      <li><a href="consulting.html" class="active">Consulting</a></li>
+      <li><a href="#contact" class="nav-cta">Book a call</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="c-hero">
+  <div class="wrap">
+    <h1>You don't need a sales pitch. <span class="accent">You need a plan.</span></h1>
+    <p class="sub">Independent help with solar and renewable energy decisions for homes and buildings in and around Arlington, and hands-on education consulting for schools and community groups that want to teach this stuff well. No sales, no commissions, no installer on speed dial waiting for a referral fee.</p>
+    <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;align-items:center">
+      <a class="btn" href="#contact">Book an intro call</a>
+      <a class="tlink" href="#tracks">See the services</a>
+    </div>
+    <div class="hero-meta">
+      <span><i></i>Based in Rosslyn</span>
+      <span><i></i>Serving Arlington and Northern Virginia</span>
+      <span><i></i>Independent, no installer affiliations</span>
+    </div>
+  </div>
+</header>
+
+<section id="tracks" style="padding-top:40px">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <h2>Two ways to work together</h2>
+    </div>
+    <div class="tracks reveal">
+      <div class="track">
+        <h3>
+          <svg viewBox="0 0 34 34" fill="none" stroke="#2e7d4f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 21l5-9h15l-5 9z"/>
+            <path d="M17 21v6M12 27h10"/>
+            <circle cx="26" cy="7" r="3.6" stroke="#e9a13b"/>
+          </svg>
+          Solar and renewable energy planning
+        </h3>
+        <p>For anyone staring at a solar quote, an aging gas furnace, or a flat roof and wondering what to actually do with it. I work the problem from your side of the table.</p>
+        <ul>
+          <li>Site and roof assessment. Orientation, shading, structural questions worth asking before anyone drills.</li>
+          <li>Production and payback modeling. Real numbers for your roof and your bills, not brochure numbers.</li>
+          <li>Quote and bid review. Side-by-side breakdown of installer proposals before you sign anything.</li>
+          <li>Whole-building roadmap. Panels, heat pumps, water heating, EV charging, batteries, and what order to do them in.</li>
+          <li>Incentive navigation. The rules have changed a lot lately. Knowing what's actually on the table right now is part of the job.</li>
+        </ul>
+        <p class="who">Good for: homeowners, condo and HOA boards, congregations, small commercial</p>
+      </div>
+      <div class="track">
+        <h3>
+          <svg viewBox="0 0 34 34" fill="none" stroke="#2e7d4f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 5v10"/>
+            <path d="M17 15l7-6M17 15l-7-6" stroke="#e9a13b"/>
+            <path d="M17 15v11M11 28h12"/>
+            <path d="M5 23c4-2 8-2 12 0s8 2 12 0" opacity=".55"/>
+          </svg>
+          Climate and clean energy education
+        </h3>
+        <p>Energy is the rare subject where the classroom itself can be the lesson. I help schools and community groups teach climate and renewables with real buildings and real data instead of worksheets.</p>
+        <ul>
+          <li>Workshops and talks. For classrooms, assemblies, PTAs, scout troops, and library programs.</li>
+          <li>Building-as-textbook design. Turning energy dashboards and rooftop arrays into math and science lessons.</li>
+          <li>Teacher support. Curriculum consulting and professional development that fits real class time.</li>
+          <li>Green team coaching. Helping student energy patrols and recycling teams actually move the meter.</li>
+          <li>Career pathway sessions. What clean energy jobs look like and how students get there.</li>
+        </ul>
+        <p class="who">Good for: schools and districts, teachers, PTAs, youth groups, libraries</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tint">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <h2>How does it work?</h2>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <h3>Intro call</h3>
+        <p>Thirty minutes, free! You describe the building or the classroom, I tell you honestly whether I can help.</p>
+      </div>
+      <div class="step">
+        <h3>Site visit or scoping</h3>
+        <p>A walk-through of the roof, the mechanical room, or the syllabus. We define what done looks like.</p>
+      </div>
+      <div class="step">
+        <h3>The plan</h3>
+        <p>A written roadmap with numbers, options, and sequencing. Yours to keep whether or not we go further.</p>
+      </div>
+      <div class="step">
+        <h3>Backup while you build</h3>
+        <p>Bid reviews, installer questions, dashboard setup, or the first workshop delivered. I stay until it works.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <h2>Worth a call, or not</h2>
+      <p>Consulting only works when it's honest, so here's the honest version.</p>
+    </div>
+    <div class="fit reveal">
+      <div class="fit-col">
+        <h3>Probably a good fit</h3>
+        <ul>
+          <li>You have installer quotes and want an independent read before signing</li>
+          <li>You sit on a condo, HOA, or congregation board weighing a solar or electrification project</li>
+          <li>You're a teacher or administrator who wants energy taught with real data</li>
+          <li>You want a multi-year plan, not a one-off purchase</li>
+        </ul>
+      </div>
+      <div class="fit-col nope">
+        <h3>Probably not</h3>
+        <ul>
+          <li>You need someone to sell or install equipment. I don't sell anything, which is the point</li>
+          <li>You need emergency roof or HVAC repair, that's a contractor call</li>
+          <li>You want a rubber stamp on a decision already made</li>
+          <li>Utility-scale projects, that's a different kind of firm</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tint">
+  <div class="wrap">
+    <div class="about">
+      <figure class="portrait reveal">
+        <svg viewBox="0 0 480 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder portrait frame">
+          <rect width="480" height="520" fill="#fffdf6"/>
+          <path d="M0 400c60-40 120-40 180-10s150 40 300-30" stroke="#e5ecd8" stroke-width="3" fill="none"/>
+          <path d="M0 440c70-30 140-24 210 2s160 24 270-36" stroke="#eef0e0" stroke-width="3" fill="none"/>
+          <circle cx="240" cy="196" r="64" stroke="#c9bfa4" stroke-width="2" fill="none"/>
+          <path d="M136 372c14-56 56-84 104-84s90 28 104 84" stroke="#c9bfa4" stroke-width="2" fill="none"/>
+          <circle cx="334" cy="120" r="20" fill="#e9a13b"/>
+          <g stroke="#e9a13b" stroke-width="2" stroke-linecap="round">
+            <path d="M334 92v-6M334 154v-6M306 120h-6M368 120h-6"/>
+          </g>
+          <text x="240" y="452" text-anchor="middle" fill="#93a294" font-family="Nunito Sans,sans-serif" font-style="italic" font-size="15">drop Tanner's photo here</text>
+        </svg>
+        <figcaption>Rosslyn, Arlington VA</figcaption>
+      </figure>
+      <div class="bio reveal">
+        <h2>The guy behind the plan</h2>
+        <p>Tanner lives in Rosslyn and spends his working days managing energy for Arlington's public school buildings, some of the most closely watched high-performance buildings in the country. Net zero schools, rooftop arrays, geothermal fields, live dashboards: he has run the numbers on all of it at building scale.</p>
+        <p>Prime Green consulting is that same discipline pointed at your roof, your board meeting, or your classroom. The advice is independent. He doesn't sell panels, doesn't take referral fees, and will tell you if solar is the wrong move for your site, because sometimes it is.</p>
+        <p class="small-note">Starter copy. Swap in Tanner's own bio, credentials, and photo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <h2>Start with the free call</h2>
+    </div>
+    <div class="contact-grid reveal">
+      <form class="cform" onsubmit="event.preventDefault();this.querySelector('button').textContent='Request noted (demo form)';">
+        <div>
+          <label for="cname">Name</label>
+          <input id="cname" type="text" required>
+        </div>
+        <div>
+          <label for="cemail">Email</label>
+          <input id="cemail" type="email" required>
+        </div>
+        <div>
+          <label for="ctype">What do you need?</label>
+          <select id="ctype">
+            <option>Solar or renewable energy planning</option>
+            <option>Climate or clean energy education</option>
+            <option>Both / not sure yet</option>
+          </select>
+        </div>
+        <div>
+          <label for="cmsg">Tell me about the building or the audience</label>
+          <textarea id="cmsg"></textarea>
+        </div>
+        <button class="btn" type="submit" style="justify-content:center">Send</button>
+        <p class="small-note">Starter form, not wired up yet. Point it at a form service or an inbox.</p>
+      </form>
+      <div class="contact-side">
+        <span class="email">tanner@primegreen.example</span>
+        <p class="small-note" style="margin-bottom:18px">Replace with a real address.</p>
+        <p>Prefer email? A few lines about your roof, your board's question, or your classroom is plenty to start. Quotes and utility bills welcome as attachments, they make the first call twice as useful.</p>
+        <p>Response time is usually a couple of days. Evenings and weekends are when most of this work happens, since there's a day job keeping school buildings honest.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html" style="text-decoration:none">
+          <svg viewBox="0 0 40 40" fill="none" style="width:32px;height:32px">
+            <circle cx="20" cy="22" r="9" fill="#e9a13b"/>
+        <polygon points="22,16.5 16,23.5 19.3,23.5 18,27.5 24,20.5 20.7,20.5" fill="#faf6ec"/>
+            <g stroke="#e9a13b" stroke-width="2" stroke-linecap="round">
+              <path d="M20 7v4M9 11l2.8 2.8M31 11l-2.8 2.8M5 22h4M31 22h4"/>
+            </g>
+            <path d="M8 33c8-5 16-5 24 0" stroke="#c9deb9" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span class="brand-name">Prime Green<small>at Arlington</small></span>
+        </a>
+        <p>Independent sustainability consulting and a community hub for clean energy, recycling, and climate work across Arlington County, Virginia.</p>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#map">The Map</a></li>
+          <li><a href="consulting.html">Consulting</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Official resources</h4>
+        <ul>
+          <li><a href="https://www.arlingtonva.us/Government/Programs/Sustainability" target="_blank" rel="noopener">Arlington County Sustainability</a></li>
+          <li><a href="https://www.apsva.us" target="_blank" rel="noopener">Arlington Public Schools</a></li>
+          <li><a href="https://www.ecoactionarlington.org" target="_blank" rel="noopener">EcoAction Arlington</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Fine print</h4>
+        <ul>
+          <li><a href="#">Independent practice</a></li>
+          <li><a href="#">Not affiliated with the County or APS</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>Prime Green at Arlington, consulting.</span>
+      <span>Starter template. Swap in real contacts and terms.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.querySelector('.nav-links').classList.remove('open')));
+</script>
+</body>
+</html>

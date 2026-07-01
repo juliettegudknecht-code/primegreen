@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prime Green at Arlington | Clean Energy, Recycling, and Climate Work in Arlington County, VA</title>
+<meta name="description" content="Prime Green tracks Arlington County's switch to clean energy: solar, recycling, net zero schools, and the road to carbon neutral by 2050. Plus independent consulting.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="prime.css">
+<style>
+/* ---------- intro ---------- */
+#intro{position:fixed;inset:0;z-index:600;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:transform .65s cubic-bezier(.7,0,.3,1),opacity .55s;cursor:pointer}
+#intro.done{transform:translateY(-100%);opacity:.3;pointer-events:none}
+#intro svg{width:min(310px,70vw);overflow:visible}
+#intro .cell{fill:rgba(46,125,79,.06);stroke:rgba(46,125,79,.35);stroke-width:1;transition:fill .16s}
+#intro .cell.on{fill:#2e7d4f}
+.intro-pct{font-size:.9rem;font-weight:700;letter-spacing:.18em;color:var(--green)}
+.intro-line{font-family:var(--serif);font-size:clamp(1.1rem,2.7vw,1.55rem);color:var(--ink);text-align:center;padding:0 26px}
+.intro-meta{font-style:italic;font-size:.85rem;color:var(--faint)}
+body.intro-lock{overflow:hidden}
+
+/* ---------- hero ---------- */
+.hero{padding:170px 0 70px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(640px 340px at 50% 0%,rgba(233,161,59,.14),transparent 65%)}
+.hero .wrap{position:relative}
+.hero-sun{width:92px;height:92px;margin:0 auto 18px;display:block}
+.sun-rays{animation:sunspin 60s linear infinite;transform-origin:50px 50px}
+@keyframes sunspin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.sun-rays{animation:none}}
+.hero h1{font-size:clamp(2.1rem,4.6vw,3.5rem);line-height:1.16;max-width:17em;margin:8px auto 20px}
+.hero .sub{color:var(--soft);font-size:1.13rem;max-width:37em;margin:0 auto 34px}
+.btn-row{display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap}
+.stats-wrap{margin-top:56px}
+
+/* ---------- solar split ---------- */
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+@media(max-width:920px){.split{grid-template-columns:1fr;gap:40px}}
+.sketch{position:relative}
+.sketch svg{display:block;width:100%;height:auto}
+.sketch figcaption{margin-top:10px;text-align:center;font-style:italic;font-size:.85rem;color:var(--faint)}
+
+/* ---------- map ---------- */
+.map-shell{display:grid;grid-template-columns:1.25fr .75fr;gap:26px;align-items:stretch}
+@media(max-width:980px){.map-shell{grid-template-columns:1fr}}
+.map-frame{position:relative}
+.map-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.map-head .t{font-family:var(--serif);font-size:1rem;color:var(--ink)}
+.map-filters{display:flex;gap:7px;flex-wrap:wrap}
+.mf{font-family:var(--sans);font-size:.82rem;font-weight:600;padding:3px 2px;border:0;border-bottom:2px solid transparent;background:none;color:var(--soft);cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .2s}
+.mf i{width:10px;height:12px;display:inline-block;clip-path:polygon(62% 0,8% 55%,38% 55%,28% 100%,88% 42%,58% 42%)}
+.mf:hover{color:var(--ink)}
+.mf.on{color:var(--ink);border-bottom-color:var(--green)}
+.map-box{position:relative}
+.map-box svg{display:block;width:100%;height:auto}
+.zoomctl{position:absolute;top:6px;right:6px;display:grid;gap:2px;z-index:6}
+.zoomctl button{width:32px;height:32px;border:0;background:none;color:var(--soft);font-size:1.5rem;font-weight:600;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s,transform .15s}
+.zoomctl button:hover{color:var(--green-deep);transform:scale(1.15)}
+.zoomctl button svg{width:15px;height:15px}
+#mapBox.zoomed svg{cursor:grab}
+#mapBox.dragging svg{cursor:grabbing}
+.map-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.78rem;font-style:italic;color:var(--faint)}
+.map-tip{position:absolute;z-index:5;pointer-events:none;background:#fff;border:1px solid var(--rule);border-radius:2px;box-shadow:0 8px 26px rgba(34,56,44,.16);padding:10px 14px;max-width:235px;opacity:0;transition:opacity .15s;transform:translate(-50%,-112%)}
+.map-tip b{display:block;font-size:.85rem;color:var(--green-deep);margin-bottom:3px}
+.map-tip span{font-size:.8rem;color:var(--soft);line-height:1.5;display:block}
+.map-tip.show{opacity:1}
+.mk{cursor:pointer}
+.mk .ring{transform-box:fill-box;transform-origin:center;animation:pulse 2.6s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.4);opacity:.7}70%{transform:scale(2.1);opacity:0}100%{transform:scale(2.1);opacity:0}}
+@media(prefers-reduced-motion:reduce){.mk .ring{animation:none;opacity:.2}}
+.mk.dim{opacity:.15}
+.mk.on .dot{stroke:var(--ink)}
+.site-list{padding:6px 0;overflow-y:auto;max-height:740px}
+.sl-group{font-style:italic;font-size:.85rem;color:var(--green);padding:16px 22px 6px;display:flex;align-items:center;gap:9px}
+.sl-group i{width:11px;height:13px;display:inline-block;clip-path:polygon(62% 0,8% 55%,38% 55%,28% 100%,88% 42%,58% 42%)}
+.sl-item{padding:9px 22px;cursor:pointer;border-left:3px solid transparent;transition:all .15s}
+.sl-item:hover,.sl-item.on{background:rgba(46,125,79,.06);border-left-color:var(--green)}
+.sl-item b{display:block;font-size:.92rem;color:var(--ink)}
+.sl-item span{font-size:.8rem;color:var(--soft);line-height:1.5;display:block;margin-top:1px}
+.sl-item.hide{display:none}
+
+/* ---------- recycling ---------- */
+.cart-art{position:absolute;top:64px;left:3%;display:flex;align-items:flex-start;gap:30px;opacity:.16;pointer-events:none}
+.cart-art svg{width:170px;height:auto}
+.cart-art svg:nth-child(1){transform:rotate(-7deg)}
+.cart-art svg:nth-child(2){width:215px;transform:translateY(30px) rotate(4deg)}
+.cart-art svg:nth-child(3){width:150px;transform:translateY(70px) rotate(9deg)}
+@media(max-width:880px){.cart-art{opacity:.09;gap:14px;left:0;top:36px}.cart-art svg{width:110px}.cart-art svg:nth-child(2){width:130px}.cart-art svg:nth-child(3){width:95px}}
+.guide{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0}
+@media(max-width:880px){.guide{grid-template-columns:1fr}}
+.gcol{padding:0 34px}
+.gcol:first-child{padding-left:0}
+.gcol+.gcol{border-left:1px solid var(--rule)}
+@media(max-width:880px){.gcol{padding:26px 0;border-left:0!important}.gcol+.gcol{border-top:1px solid var(--rule)}}
+.gcol h3{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.gcol h3 svg{width:34px;height:auto;flex:none}
+.gcol .gsub{font-style:italic;color:var(--faint);font-size:.9rem;margin-bottom:14px;display:block}
+.gcol ul{list-style:disc;padding-left:20px;display:grid;gap:9px;color:var(--soft);font-size:.95rem}
+.gcol li::marker{color:var(--green)}
+.gcol li b{color:var(--ink)}
+.g-blue li::marker{color:var(--sky)}
+.g-x li::marker{color:var(--sun)}
+
+/* ---------- schools ---------- */
+.school-feat{display:grid;grid-template-columns:.95fr 1.05fr;gap:60px;align-items:center}
+@media(max-width:920px){.school-feat{grid-template-columns:1fr;gap:40px}}
+.dash svg{display:block;width:100%;height:auto}
+.dash .drow{display:flex;justify-content:space-between;gap:14px;margin-top:18px;flex-wrap:wrap}
+.dash .dcell b{display:block;font-family:var(--serif);font-size:1.5rem;color:var(--green-deep)}
+.dash .dcell small{font-size:.8rem;color:var(--soft)}
+.dash figcaption{margin:0 0 14px;font-style:italic;font-size:.85rem;color:var(--faint);text-align:center}
+
+/* ---------- zigzag timeline ---------- */
+.zig{position:relative;height:720px;max-width:900px;margin:0 auto}
+.zigline{position:absolute;inset:0;width:100%;height:100%}
+.zstop{position:absolute;width:300px;transform:translateX(-50%);text-align:center}
+.zstop .zdot{width:18px;height:18px;border-radius:50%;border:3px solid var(--green);background:var(--paper);margin:0 auto 12px}
+.zstop.done .zdot{border:0;border-radius:0;width:19px;height:22px;background:var(--green);clip-path:polygon(62% 0,8% 55%,38% 55%,28% 100%,88% 42%,58% 42%)}
+.zstop b{font-family:var(--serif);font-size:1.6rem;color:var(--green-deep);display:block}
+.zstop .zflag{font-style:italic;color:var(--sun);font-size:.9rem;display:block;margin-bottom:4px}
+.zstop h3{font-size:1.08rem;margin-bottom:6px}
+.zstop p{font-size:.92rem;color:var(--soft);line-height:1.55}
+@media(max-width:760px){
+  .zig{height:auto;display:grid;gap:34px;justify-items:center}
+  .zigline{display:none}
+  .zstop{position:static;transform:none}
+}
+
+/* ---------- fork in the road ---------- */
+.fork-fig{max-width:980px;margin:0 auto 30px}
+.fork-fig svg{display:block;width:100%;height:auto}
+.lane-dash{stroke-dasharray:16 14;animation:roaddash 1.7s linear infinite}
+@keyframes roaddash{to{stroke-dashoffset:-60}}
+@media(prefers-reduced-motion:reduce){.lane-dash{animation:none}}
+.fork-branch{cursor:pointer}
+.fork-branch .road-label{font-family:var(--serif);font-size:26px;fill:var(--ink);transition:fill .2s}
+.fork-branch:hover .road-label,.fork-branch.lit .road-label{fill:var(--green)}
+.fork-branch:hover .lane-dash,.fork-branch.lit .lane-dash{stroke:var(--sun)}
+.paths{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;max-width:1000px;margin:0 auto}
+@media(max-width:880px){.paths{grid-template-columns:1fr}}
+.path-col{padding:0 32px}
+.path-col:first-child{padding-left:0}
+.path-col+.path-col{border-left:1px solid var(--rule)}
+@media(max-width:880px){.path-col{padding:24px 0;border-left:0!important}.path-col+.path-col{border-top:1px solid var(--rule)}}
+.path-col.lit h3{color:var(--green)}
+.path-col h3{margin-bottom:12px;transition:color .2s}
+.path-col ul{list-style:disc;padding-left:20px;display:grid;gap:9px;color:var(--soft);font-size:.95rem}
+.path-col li::marker{color:var(--green)}
+
+/* ---------- signup ---------- */
+.signup{display:flex;gap:10px;max-width:460px;margin:0 auto}
+.signup input{flex:1;background:#fff;border:1px solid var(--rule);border-radius:2px;color:var(--ink);padding:12px 16px;font-family:var(--sans);font-size:.98rem;min-width:0;outline:none}
+.signup input:focus{border-color:var(--green)}
+.signup input::placeholder{color:var(--faint)}
+</style>
+</head>
+<body>
+
+<div id="intro" role="presentation" aria-hidden="true">
+  <svg viewBox="0 0 302 182" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <rect x="1" y="1" width="300" height="180" rx="6" stroke="rgba(46,125,79,.5)" stroke-width="1.6"/>
+    <g id="introGrid"></g>
+  </svg>
+  <div class="intro-pct" id="introPct">0%</div>
+  <div class="intro-line">Powered by the giant fusion reactor in the sky.</div>
+  <div class="intro-meta">click anywhere to skip</div>
+</div>
+<script>
+(function(){
+  const el=document.getElementById('intro');
+  if(sessionStorage.getItem('primeIntro')||matchMedia('(prefers-reduced-motion: reduce)').matches){el.remove();return}
+  document.body.classList.add('intro-lock');
+  const NS='http://www.w3.org/2000/svg';
+let view={x:0,y:0,w:VB.w,h:VB.h};
+  const grid=document.getElementById('introGrid');
+  const cells=[];
+  for(let r=0;r<4;r++)for(let c=0;c<6;c++){
+    const rect=document.createElementNS(NS,'rect');
+    rect.setAttribute('x',16+c*45);rect.setAttribute('y',14+r*40);
+    rect.setAttribute('width',41);rect.setAttribute('height',36);
+    rect.setAttribute('rx',4);rect.setAttribute('class','cell');
+    grid.append(rect);cells.push(rect);
+  }
+  const order=cells.map((_,i)=>i).sort(()=>Math.random()-.5);
+  const pct=document.getElementById('introPct');
+  const T=1500,t0=performance.now();let done=false;
+  function finish(){
+    if(done)return;done=true;
+    try{sessionStorage.setItem('primeIntro','1')}catch(e){}
+    el.classList.add('done');document.body.classList.remove('intro-lock');
+    setTimeout(()=>el.remove(),800);
+  }
+  (function tick(){
+    if(done)return;
+    const p=Math.min((performance.now()-t0)/T,1);
+    const n=Math.floor(p*cells.length);
+    for(let i=0;i<n;i++)cells[order[i]].classList.add('on');
+    pct.textContent=Math.round(p*100)+'%';
+    if(p>=1){setTimeout(finish,430)}else requestAnimationFrame(tick);
+  })();
+  setTimeout(()=>{if(!done){cells.forEach(c=>c.classList.add('on'));pct.textContent='100%';finish()}},T+1000);
+  el.addEventListener('click',finish);
+})();
+</script>
+
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="22" r="9" fill="#e9a13b"/>
+        <polygon points="22,16.5 16,23.5 19.3,23.5 18,27.5 24,20.5 20.7,20.5" fill="#faf6ec"/>
+        <g stroke="#e9a13b" stroke-width="2" stroke-linecap="round">
+          <path d="M20 7v4M9 11l2.8 2.8M31 11l-2.8 2.8M5 22h4M31 22h4"/>
+        </g>
+        <path d="M8 33c8-5 16-5 24 0" stroke="#2e7d4f" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="brand-name">Prime Green<small>at Arlington</small></span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#solar">Solar</a></li>
+      <li><a href="#map">The Map</a></li>
+      <li><a href="#recycling">Recycling</a></li>
+      <li><a href="#schools">Schools</a></li>
+      <li><a href="#schedule">2050</a></li>
+      <li><a href="consulting.html" class="nav-cta">Consulting</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <svg class="hero-sun" viewBox="0 0 100 100" fill="none" role="img" aria-label="A friendly sun">
+      <g class="sun-rays" stroke="#e9a13b" stroke-width="3" stroke-linecap="round">
+        <path d="M50 6v12M50 82v12M6 50h12M82 50h12M19 19l8.5 8.5M72.5 72.5L81 81M81 19l-8.5 8.5M27.5 72.5L19 81"/>
+      </g>
+      <circle cx="50" cy="50" r="20" fill="#e9a13b"/>
+      <polygon points="54,37 41,54 49,54 45,64 59,47 51,47" fill="#faf6ec"/>
+      <path d="M10 91c26-13 54-13 80 0" stroke="#2e7d4f" stroke-width="3.5" stroke-linecap="round"/>
+    </svg>
+    <h1>Arlington is switching to clean energy. <span class="accent">This is our community's map.</span></h1>
+    <p class="sub">Prime Green tracks the county's climate work and helps you plug into it: solar on the rooftops, food scraps out of the landfill, three net zero schools and counting. Built in Rosslyn, covering all 26 square miles.</p>
+    <div class="btn-row">
+      <a class="btn" href="#map">See the map
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="tlink" href="consulting.html">Work with Tanner
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <div class="stats-wrap reveal">
+      <div class="stats">
+        <div class="stat"><b data-count="2050">2050</b><small>carbon neutral county target</small></div>
+        <div class="stat"><b data-count="100" data-suffix="%">100%</b><small>renewable electricity for county operations</small></div>
+        <div class="stat"><b data-count="3">3</b><small>net zero schools already running</small></div>
+        <div class="stat"><b data-count="26" data-suffix=" sq mi">26 sq mi</b><small>the whole county, all of it in scope</small></div>
+      </div>
+    </div>
+    <div class="trail trail-lead" aria-hidden="true"><svg viewBox="0 0 300 230" fill="none"><path d="M150 6 C60 30 60 62 150 84 C240 106 240 138 150 160 C86 176 92 204 148 212" stroke="#7ba58c" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 11"/><path d="M153 211.5 L146 220.8 h4.4 L148.9 229.5 L156 220.2 h-4.4 Z" fill="#e9a13b"/></svg></div>
+  </div>
+</header>
+
+<!-- ============ SOLAR ============ -->
+<section id="solar">
+  <div class="wrap">
+    <div class="split">
+      <div class="reveal">
+        <h2>Could your roof be a power plant?</h2>
+        <p style="color:var(--soft)">Arlington's government already runs on renewable electricity, mostly from a big solar farm downstate. The next phase is rooftops: yours, your condo's, your congregation's. None of this requires becoming an electrician. It requires knowing which door to knock on.</p>
+        <ul class="checklist">
+          <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M13.5 2.8L5.8 13.2h4.1l-1.4 8 7.7-10.4h-4.1z" fill="#2e7d4f"/></svg></span>
+            <span>Join a group-buy round. Capital Area Solar Switch pools Northern Virginia buyers for group pricing. Free to join, no obligation to purchase.</span></li>
+          <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M13.5 2.8L5.8 13.2h4.1l-1.4 8 7.7-10.4h-4.1z" fill="#2e7d4f"/></svg></span>
+            <span>Book a free energy coach. The county's AIRE Home Energy Hub offers free virtual coaching sessions and rebates for efficiency and electrification upgrades.</span></li>
+          <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M13.5 2.8L5.8 13.2h4.1l-1.4 8 7.7-10.4h-4.1z" fill="#2e7d4f"/></svg></span>
+            <span>Electrify on replacement. When the gas furnace or water heater dies, that's the cheap moment to switch to a heat pump. Plan it before it dies, not after.</span></li>
+        </ul>
+        <a class="btn btn-ghost" href="consulting.html">Get help planning it</a>
+      </div>
+      <figure class="sketch reveal">
+        <svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Drawing of a house with rooftop solar panels">
+          <ellipse cx="280" cy="368" rx="250" ry="34" fill="#e5ecd8"/>
+          <circle cx="466" cy="86" r="30" fill="#e9a13b"/>
+          <g stroke="#e9a13b" stroke-width="2.6" stroke-linecap="round">
+            <path d="M466 44v-10M466 138v-10M424 86h-10M518 86h-10M436 56l-7-7M496 56l7-7M436 116l-7 7M496 116l7 7"/>
+          </g>
+          <path d="M110 330V190l170-96 170 96v140" stroke="#2e7d4f" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M92 200l188-106 188 106" stroke="#2e7d4f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M110 330h340" stroke="#2e7d4f" stroke-width="3" stroke-linecap="round"/>
+          <g stroke="#54889f" stroke-width="2.4" fill="#cfe0e8">
+            <path d="M160 216l82-46 36 21-82 46z"/>
+            <path d="M292 214l82-46 36 21-82 46z" transform="translate(6 40)"/>
+          </g>
+          <g stroke="#54889f" stroke-width="1.6" opacity=".65">
+            <path d="M181 227l82-46M202 239l82-46"/>
+            <path d="M319 267l82-46M340 279l82-46"/>
+          </g>
+          <rect x="243" y="258" width="74" height="72" fill="#f7f1df" stroke="#2e7d4f" stroke-width="3"/>
+          <path d="M280 258v72M243 294h74" stroke="#2e7d4f" stroke-width="2.4"/>
+          <rect x="150" y="270" width="44" height="60" fill="#2e7d4f" opacity=".9" rx="3"/>
+          <circle cx="186" cy="301" r="3" fill="#f7f1df"/>
+          <circle cx="80" cy="292" r="34" fill="#7fae8c"/>
+          <circle cx="58" cy="316" r="24" fill="#5d9973"/>
+          <rect x="72" y="318" width="12" height="46" fill="#8a6b4a" rx="4"/>
+          <circle cx="492" cy="306" r="26" fill="#7fae8c"/>
+          <rect x="486" y="322" width="11" height="40" fill="#8a6b4a" rx="4"/>
+        </svg>
+        <figcaption>Any south-ish roof in Arlington is a candidate. Shade is negotiable, orientation mostly isn't.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MAP ============ -->
+<section id="map">
+  <div class="wrap">
+    <div class="trail flip" aria-hidden="true"><svg viewBox="0 0 300 150" fill="none"><path d="M96 6 C210 22 236 48 150 72 C64 96 84 124 148 130" stroke="#7ba58c" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 11"/><path d="M153 129.5 L146 138.8 h4.4 L148.9 147.5 L156 138.2 h-4.4 Z" fill="#e9a13b"/></svg></div>
+    <div class="sec-head reveal">
+      <h2>Where can you see it working?</h2>
+      <p>Real places, in <b>our</b> real county boundary. Every marker is something <b>you</b> can visit, tour, or drop into. Tap a site for the story!</p>
+    </div>
+    <div class="map-shell reveal">
+      <div class="map-frame">
+        <div class="map-head">
+          <span class="t">Arlington County</span>
+          <div class="map-filters" id="mapFilters"></div>
+        </div>
+        <div class="map-box" id="mapBox">
+          <svg id="mapSvg" viewBox="0 0 1000 973.5" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="countyClip"><path d="M30.0 381.3 L443.0 795.3 L440.5 806.0 L458.1 817.6 L464.6 815.0 L466.8 822.2 L463.9 824.3 L471.9 835.0 L477.5 829.5 L491.2 839.3 L497.4 850.5 L511.1 860.8 L506.8 867.5 L538.0 890.6 L590.9 943.5 L602.4 933.3 L608.9 914.0 L612.9 848.9 L606.1 802.4 L648.6 811.4 L656.8 803.9 L727.4 803.8 L754.1 794.4 L812.8 829.4 L865.2 825.4 L892.9 839.6 L925.4 842.6 L946.5 836.0 L961.9 759.2 L970.0 753.0 L962.4 741.4 L957.5 706.9 L941.3 668.4 L926.4 654.5 L922.7 636.5 L911.5 638.1 L908.0 645.2 L893.5 635.4 L924.7 628.2 L920.9 600.4 L907.3 572.2 L871.5 532.3 L862.8 538.3 L870.6 550.7 L867.0 564.5 L856.0 570.5 L845.8 569.4 L833.9 551.7 L833.1 527.8 L823.6 511.5 L806.9 493.5 L783.1 489.2 L750.8 424.5 L750.6 404.1 L746.1 402.1 L747.3 394.7 L739.6 372.8 L727.2 349.2 L725.7 327.7 L705.8 314.7 L601.4 300.2 L534.7 260.5 L489.4 213.7 L484.3 188.5 L469.6 161.5 L405.6 84.8 L392.2 45.7 L379.2 30.0 Z"/></clipPath>
+            </defs>
+            <!-- Potomac, painted -->
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M946.5 836.0 L961.9 759.2 L970.0 753.0 L962.4 741.4 L957.5 706.9 L941.3 668.4 L926.4 654.5 L922.7 636.5 L911.5 638.1 L908.0 645.2 L893.5 635.4 L924.7 628.2 L920.9 600.4 L907.3 572.2 L871.5 532.3 L862.8 538.3 L870.6 550.7 L867.0 564.5 L856.0 570.5 L845.8 569.4 L833.9 551.7 L833.1 527.8 L823.6 511.5 L806.9 493.5 L783.1 489.2 L750.8 424.5 L750.6 404.1 L746.1 402.1 L747.3 394.7 L739.6 372.8 L727.2 349.2 L725.7 327.7 L705.8 314.7 L601.4 300.2 L534.7 260.5 L489.4 213.7 L484.3 188.5 L469.6 161.5 L405.6 84.8 L392.2 45.7 L379.2 30.0" transform="translate(14 -7)" stroke="#c9dfec" stroke-width="22"/>
+              <path d="M946.5 836.0 L961.9 759.2 L970.0 753.0 L962.4 741.4 L957.5 706.9 L941.3 668.4 L926.4 654.5 L922.7 636.5 L911.5 638.1 L908.0 645.2 L893.5 635.4 L924.7 628.2 L920.9 600.4 L907.3 572.2 L871.5 532.3 L862.8 538.3 L870.6 550.7 L867.0 564.5 L856.0 570.5 L845.8 569.4 L833.9 551.7 L833.1 527.8 L823.6 511.5 L806.9 493.5 L783.1 489.2 L750.8 424.5 L750.6 404.1 L746.1 402.1 L747.3 394.7 L739.6 372.8 L727.2 349.2 L725.7 327.7 L705.8 314.7 L601.4 300.2 L534.7 260.5 L489.4 213.7 L484.3 188.5 L469.6 161.5 L405.6 84.8 L392.2 45.7 L379.2 30.0" transform="translate(30 -16)" stroke="#a8cadd" stroke-width="3" opacity=".7"/>
+            </g>
+            <!-- county fill, whiter -->
+            <path d="M30.0 381.3 L443.0 795.3 L440.5 806.0 L458.1 817.6 L464.6 815.0 L466.8 822.2 L463.9 824.3 L471.9 835.0 L477.5 829.5 L491.2 839.3 L497.4 850.5 L511.1 860.8 L506.8 867.5 L538.0 890.6 L590.9 943.5 L602.4 933.3 L608.9 914.0 L612.9 848.9 L606.1 802.4 L648.6 811.4 L656.8 803.9 L727.4 803.8 L754.1 794.4 L812.8 829.4 L865.2 825.4 L892.9 839.6 L925.4 842.6 L946.5 836.0 L961.9 759.2 L970.0 753.0 L962.4 741.4 L957.5 706.9 L941.3 668.4 L926.4 654.5 L922.7 636.5 L911.5 638.1 L908.0 645.2 L893.5 635.4 L924.7 628.2 L920.9 600.4 L907.3 572.2 L871.5 532.3 L862.8 538.3 L870.6 550.7 L867.0 564.5 L856.0 570.5 L845.8 569.4 L833.9 551.7 L833.1 527.8 L823.6 511.5 L806.9 493.5 L783.1 489.2 L750.8 424.5 L750.6 404.1 L746.1 402.1 L747.3 394.7 L739.6 372.8 L727.2 349.2 L725.7 327.7 L705.8 314.7 L601.4 300.2 L534.7 260.5 L489.4 213.7 L484.3 188.5 L469.6 161.5 L405.6 84.8 L392.2 45.7 L379.2 30.0 Z" fill="#fcfdf3" style="filter:drop-shadow(0 8px 18px rgba(34,56,44,.14))"/>
+            <!-- waterways -->
+            <g clip-path="url(#countyClip)" fill="none" stroke-linecap="round">
+              <path d="M144.9 511.6 L204.8 562.9 L278.0 614.2 L351.2 665.5 L404.4 708.2 L464.3 751.0 L524.2 793.7 L577.4 810.8 L624.0 819.3 L697.2 836.4 L777.0 845.0 L856.9 853.5" stroke="#8fb9d2" stroke-width="4.5"/>
+              <path d="M45.1 580.0 L244.7 648.4 L444.4 742.4 L624.0 819.3" stroke="#c9bfa4" stroke-width="2" stroke-dasharray="7 7"/>
+            </g>
+            <!-- boundary -->
+            <path d="M30.0 381.3 L443.0 795.3 L440.5 806.0 L458.1 817.6 L464.6 815.0 L466.8 822.2 L463.9 824.3 L471.9 835.0 L477.5 829.5 L491.2 839.3 L497.4 850.5 L511.1 860.8 L506.8 867.5 L538.0 890.6 L590.9 943.5 L602.4 933.3 L608.9 914.0 L612.9 848.9 L606.1 802.4 L648.6 811.4 L656.8 803.9 L727.4 803.8 L754.1 794.4 L812.8 829.4 L865.2 825.4 L892.9 839.6 L925.4 842.6 L946.5 836.0 L961.9 759.2 L970.0 753.0 L962.4 741.4 L957.5 706.9 L941.3 668.4 L926.4 654.5 L922.7 636.5 L911.5 638.1 L908.0 645.2 L893.5 635.4 L924.7 628.2 L920.9 600.4 L907.3 572.2 L871.5 532.3 L862.8 538.3 L870.6 550.7 L867.0 564.5 L856.0 570.5 L845.8 569.4 L833.9 551.7 L833.1 527.8 L823.6 511.5 L806.9 493.5 L783.1 489.2 L750.8 424.5 L750.6 404.1 L746.1 402.1 L747.3 394.7 L739.6 372.8 L727.2 349.2 L725.7 327.7 L705.8 314.7 L601.4 300.2 L534.7 260.5 L489.4 213.7 L484.3 188.5 L469.6 161.5 L405.6 84.8 L392.2 45.7 L379.2 30.0 Z" fill="none" stroke="#2e7d4f" stroke-width="3.2" stroke-linejoin="round"/>
+            <!-- geography labels -->
+            <g font-family="Nunito Sans,sans-serif" fill="#93a294" letter-spacing="2">
+              <text x="812" y="330" font-size="15" font-style="italic" transform="rotate(52 812 330)">Potomac River</text>
+              <text x="905" y="440" font-size="12" font-style="italic" fill="#b3bfae" transform="rotate(52 905 440)">Washington DC</text>
+              <text x="120" y="700" font-size="12" font-style="italic" fill="#b3bfae" transform="rotate(45 120 700)">Fairfax County</text>
+              <text x="330" y="628" font-size="11" font-style="italic" fill="#8fb2c4" transform="rotate(35 330 628)">Four Mile Run</text>
+              <text x="404" y="470" font-size="12">Ballston</text>
+              <text x="770" y="672" font-size="12">Crystal City</text>
+              <text x="472" y="612" font-size="12" transform="rotate(18 472 612)">Columbia Pike</text>
+            </g>
+            <!-- compass + scale -->
+            <g stroke="#93a294" fill="#93a294">
+              <path d="M78 96v-40M78 56l-9 14M78 56l9 14" fill="none" stroke-width="1.6"/>
+              <text x="71" y="120" font-family="Nunito Sans,sans-serif" font-size="14" stroke="none">N</text>
+            </g>
+            <g stroke="#93a294">
+              <path d="M60 920h124M60 913v14M184 913v14" fill="none" stroke-width="1.4"/>
+              <text x="98" y="944" font-family="Nunito Sans,sans-serif" font-size="12" fill="#93a294" stroke="none">1 mile</text>
+            </g>
+            <!-- little landmarks -->
+            <g aria-hidden="true">
+              <circle cx="430" cy="196" r="15" fill="#7fae8c"/><rect x="427" y="206" width="6" height="17" rx="2.5" fill="#8a6b4a"/>
+              <circle cx="252" cy="478" r="13" fill="#5d9973"/><rect x="249.5" y="487" width="5.5" height="15" rx="2.5" fill="#8a6b4a"/>
+              <circle cx="326" cy="636" r="14" fill="#7fae8c"/><rect x="323" y="645" width="6" height="16" rx="2.5" fill="#8a6b4a"/>
+              <circle cx="548" cy="688" r="13" fill="#5d9973"/><rect x="545.5" y="697" width="5.5" height="15" rx="2.5" fill="#8a6b4a"/>
+              <circle cx="118" cy="192" r="20" fill="#e9a13b"/>
+              <g stroke="#e9a13b" stroke-width="2.2" stroke-linecap="round">
+                <path d="M118 162v-8M118 222v8M88 192h-8M148 192h8M97 171l-6-6M139 171l6-6"/>
+              </g>
+            </g>
+            <g id="markers"></g>
+          </svg>
+          <div class="map-tip" id="mapTip"><b></b><span></span></div>
+          <div class="zoomctl">
+            <button id="zin" aria-label="Zoom in" type="button">+</button>
+            <button id="zout" aria-label="Zoom out" type="button">-</button>
+            <button id="zhome" aria-label="Reset zoom" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg></button>
+          </div>
+        </div>
+        <div class="map-foot" style="justify-content:center">
+          <span>boundary from OpenStreetMap contributors</span>
+        </div>
+      </div>
+      <aside class="site-list" id="siteList" aria-label="Map site list"></aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RECYCLING ============ -->
+<section id="recycling" class="tint">
+  <div class="cart-art" aria-hidden="true">
+    <svg viewBox="0 0 40 42" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13h20l-2.3 19a2 2 0 0 1-2 1.8H14.3a2 2 0 0 1-2-1.8z" fill="#cfe0e8" stroke="#54889f" stroke-width="2.4"/><path d="M8 13l3.5-4.5h17L32 13" stroke="#54889f" stroke-width="2.4"/><path d="M16 18v9M24 18v9" stroke="#54889f" stroke-width="2" opacity=".65"/><circle cx="15" cy="37.5" r="2.8" stroke="#22382c" stroke-width="2"/><circle cx="25" cy="37.5" r="2.8" stroke="#22382c" stroke-width="2"/></svg>
+    <svg viewBox="0 0 40 42" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13h20l-2.3 19a2 2 0 0 1-2 1.8H14.3a2 2 0 0 1-2-1.8z" fill="#d5e8d5" stroke="#2e7d4f" stroke-width="2.4"/><path d="M8 13l3.5-4.5h17L32 13" stroke="#2e7d4f" stroke-width="2.4"/><path d="M16 18v9M24 18v9" stroke="#2e7d4f" stroke-width="2" opacity=".65"/><circle cx="15" cy="37.5" r="2.8" stroke="#22382c" stroke-width="2"/><circle cx="25" cy="37.5" r="2.8" stroke="#22382c" stroke-width="2"/></svg>
+    <svg viewBox="0 0 40 42" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36a12 14 0 0 1 24 0z" fill="#ddd2ee" stroke="#8b6fc9" stroke-width="2.4"/><ellipse cx="20" cy="25" rx="4.5" ry="3" fill="#faf6ec" stroke="#8b6fc9" stroke-width="2"/><path d="M5 36h30" stroke="#8b6fc9" stroke-width="2.4"/></svg>
+  </div>
+  <div class="wrap">
+    <div class="trail" aria-hidden="true"><svg viewBox="0 0 300 150" fill="none"><path d="M96 6 C210 22 236 48 150 72 C64 96 84 124 148 130" stroke="#7ba58c" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 11"/><path d="M153 129.5 L146 138.8 h4.4 L148.9 147.5 L156 138.2 h-4.4 Z" fill="#e9a13b"/></svg></div>
+    <div class="sec-head right reveal">
+      <h2>What goes in which cart?</h2>
+      <p>Arlington changed the rules twice in recent years: glass left the blue cart in 2019, and food scraps joined the green cart in 2021. Most sorting mistakes trace back to those two changes, so here is the current version.</p>
+    </div>
+    <div class="guide reveal">
+      <div class="gcol g-blue">
+        <h3><svg viewBox="0 0 40 42" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13h20l-2.3 19a2 2 0 0 1-2 1.8H14.3a2 2 0 0 1-2-1.8z" fill="#cfe0e8" stroke="#54889f" stroke-width="2.4"/><path d="M8 13l3.5-4.5h17L32 13" stroke="#54889f" stroke-width="2.4"/><path d="M16 18v9M24 18v9" stroke="#54889f" stroke-width="2" opacity=".65"/><circle cx="15" cy="37.5" r="2.8" stroke="#22382c" stroke-width="2"/><circle cx="25" cy="37.5" r="2.8" stroke="#22382c" stroke-width="2"/></svg>Blue cart</h3>
+        <span class="gsub">curbside recycling</span>
+        <ul>
+          <li>Paper and cardboard, clean and dry, boxes flattened</li>
+          <li>Metal cans and rinsed aluminum</li>
+          <li>Plastic bottles, jugs, and tubs, rinsed, lids on</li>
+          <li>No glass. It has its own system now, see the purple bins</li>
+          <li>No bags, and never bag your recyclables. Loose only</li>
+        </ul>
+      </div>
+      <div class="gcol">
+        <h3><svg viewBox="0 0 40 42" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13h20l-2.3 19a2 2 0 0 1-2 1.8H14.3a2 2 0 0 1-2-1.8z" fill="#d5e8d5" stroke="#2e7d4f" stroke-width="2.4"/><path d="M8 13l3.5-4.5h17L32 13" stroke="#2e7d4f" stroke-width="2.4"/><path d="M16 18v9M24 18v9" stroke="#2e7d4f" stroke-width="2" opacity=".65"/><circle cx="15" cy="37.5" r="2.8" stroke="#22382c" stroke-width="2"/><circle cx="25" cy="37.5" r="2.8" stroke="#22382c" stroke-width="2"/></svg>Green cart</h3>
+        <span class="gsub">food scraps + yard waste</span>
+        <ul>
+          <li>All food scraps since 2021: produce, coffee grounds, and yes, meat, bones, and dairy!</li>
+          <li>Leaves, brush, grass, same cart, same truck</li>
+          <li>Paper bags or certified liners keep the cart livable</li>
+          <li>Where it goes: an industrial composting facility in Manassas</li>
+          <li>What comes back: finished compost for parks, gardens, and residents</li>
+        </ul>
+      </div>
+      <div class="gcol g-x">
+        <h3><svg viewBox="0 0 40 42" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 36a12 14 0 0 1 24 0z" fill="#ddd2ee" stroke="#8b6fc9" stroke-width="2.4"/><ellipse cx="20" cy="25" rx="4.5" ry="3" fill="#faf6ec" stroke="#8b6fc9" stroke-width="2"/><path d="M5 36h30" stroke="#8b6fc9" stroke-width="2.4"/></svg>Neither cart</h3>
+        <span class="gsub">special handling</span>
+        <ul>
+          <li>Glass goes to the purple drop-off bins and gets crushed into sand and gravel</li>
+          <li>Batteries and electronics go to E-CARE, the county's spring and fall event at Wakefield High School</li>
+          <li>Paint and chemicals, year-round drop-off at the Trades Center</li>
+          <li>Plastic film and bags return to grocery store bins</li>
+          <li>Clothing and textiles to donation bins, not the blue cart</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCHOOLS ============ -->
+<section id="schools">
+  <div class="wrap">
+    <div class="trail flip" aria-hidden="true"><svg viewBox="0 0 300 150" fill="none"><path d="M96 6 C210 22 236 48 150 72 C64 96 84 124 148 130" stroke="#7ba58c" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 11"/><path d="M153 129.5 L146 138.8 h4.4 L148.9 147.5 L156 138.2 h-4.4 Z" fill="#e9a13b"/></svg></div>
+    <div class="school-feat">
+      <figure class="dash reveal">
+        <figcaption>Prototype sketch with made-up curves, not real data. Swap in a live school dashboard later.</figcaption>
+        <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <g stroke="#eee7d3">
+            <path d="M10 46h460M10 90h460M10 134h460M10 178h460"/>
+          </g>
+          <path d="M10 178 C60 176 80 120 120 96 S200 34 240 32 320 58 360 92 440 176 470 178" stroke="#e9a13b" stroke-width="2.6"/>
+          <path d="M10 130 L60 126 110 120 160 114 210 110 260 108 310 110 360 116 410 124 470 130" stroke="#2e7d4f" stroke-width="2.4" stroke-dasharray="6 6"/>
+          <g font-family="Nunito Sans,sans-serif" font-size="12" font-weight="700">
+            <text x="185" y="22" fill="#c07f1d">solar production</text>
+            <text x="330" y="150" fill="#2e7d4f">building load</text>
+          </g>
+          <path d="M10 196h460" stroke="#c9bfa4"/>
+          <g font-family="Nunito Sans,sans-serif" font-size="11" fill="#93a294">
+            <text x="10" y="214">6am</text><text x="228" y="214">noon</text><text x="448" y="214">6pm</text>
+          </g>
+        </svg>
+        <div class="drow">
+          <div class="dcell"><b>~500 kW</b><small>Discovery rooftop array</small></div>
+          <div class="dcell"><b>1,700</b><small>panels over the classrooms</small></div>
+          <div class="dcell"><b>3 of 3</b><small>net zero schools performing</small></div>
+        </div>
+      </figure>
+      <div class="reveal">
+        <svg viewBox="0 0 64 54" fill="none" style="width:56px;height:auto;display:block;margin-bottom:10px" aria-hidden="true">
+          <path d="M6 50V28L32 9l26 19v22" stroke="#2e7d4f" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M2 30L32 7l30 23" stroke="#2e7d4f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14 27l10-7 8 5.5-10 7z" fill="#cfe0e8" stroke="#54889f" stroke-width="2"/>
+          <rect x="26" y="36" width="12" height="14" fill="#f7f1df" stroke="#2e7d4f" stroke-width="2.2"/>
+          <path d="M32 2v7" stroke="#2e7d4f" stroke-width="2.2"/>
+          <path d="M32 2h9l-3 3 3 3h-9z" fill="#e9a13b"/>
+          <path d="M6 50h52" stroke="#2e7d4f" stroke-width="2.6" stroke-linecap="round"/>
+          <rect x="44" y="34" width="8" height="8" fill="#cfe0e8" stroke="#54889f" stroke-width="2"/>
+        </svg>
+        <h2>Three schools make their own power</h2>
+        <p style="color:var(--soft)">Discovery Elementary opened in 2015 as the largest net zero elementary school in the country, and the first school anywhere to earn LEED Zero Energy certification. Fleet and Cardinal followed. The interesting part is what happens inside: the dashboards are wired into math and science class, so the building itself is the textbook.</p>
+        <ul class="checklist">
+          <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M13.5 2.8L5.8 13.2h4.1l-1.4 8 7.7-10.4h-4.1z" fill="#2e7d4f"/></svg></span>
+            <span>Rooftop solar plus geothermal. Discovery pairs about 1,700 panels with wells under the play field.</span></li>
+          <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M13.5 2.8L5.8 13.2h4.1l-1.4 8 7.7-10.4h-4.1z" fill="#2e7d4f"/></svg></span>
+            <span>Live data in class. Kids graph their own school's production against its load. Kilowatts become homework!</span></li>
+          <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M13.5 2.8L5.8 13.2h4.1l-1.4 8 7.7-10.4h-4.1z" fill="#2e7d4f"/></svg></span>
+            <span>Green teams move the meter. Student energy patrols and recycling crews, coached well, produce measurable savings.</span></li>
+        </ul>
+        <a class="btn btn-ghost" href="consulting.html#tracks">Bring this to your school</a>
+        <div class="mini-links">
+          <a href="https://www.solarempoweredschools.com/news-events/arlington-public-schools-engineer-solar-circuits" target="_blank" rel="noopener">Read: APS students engineer solar circuits
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+          <a href="https://www.apsva.us/advisory-councils/non-instructional-advisory-committees/superintendents-advisory-committee-sustainability/" target="_blank" rel="noopener">The APS sustainability advisory committee
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ZIGZAG TIMELINE ============ -->
+<section id="schedule" class="tint">
+  <div class="wrap">
+    <div class="trail" aria-hidden="true"><svg viewBox="0 0 300 150" fill="none"><path d="M96 6 C210 22 236 48 150 72 C64 96 84 124 148 130" stroke="#7ba58c" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 11"/><path d="M153 129.5 L146 138.8 h4.4 L148.9 147.5 L156 138.2 h-4.4 Z" fill="#e9a13b"/></svg></div>
+    <div class="sec-head center reveal">
+      <h2>The road to 2050</h2>
+      <p>The county put real dates on this plan, and the first two are already done.</p>
+    </div>
+    <div class="zig reveal">
+      <svg class="zigline" viewBox="0 0 1000 720" preserveAspectRatio="none" aria-hidden="true">
+        <polyline points="250,60 750,240 250,420 750,600" fill="none" stroke="#2e7d4f" stroke-width="2.5" stroke-dasharray="9 9" opacity=".5" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <div class="zstop done" style="left:25%;top:44px">
+        <span class="zdot"></span>
+        <b>2019</b>
+        <span class="zflag">done</span>
+        <h3>The plan gets teeth</h3>
+        <p>The Community Energy Plan commits the whole county, not just government, to carbon neutral by 2050.</p>
+      </div>
+      <div class="zstop done" style="left:75%;top:224px">
+        <span class="zdot"></span>
+        <b>2022</b>
+        <span class="zflag">done, three years early!</span>
+        <h3>County ops hit 100%</h3>
+        <p>Government operations reach 100% renewable electricity, mostly via a big solar farm downstate.</p>
+      </div>
+      <div class="zstop" style="left:25%;top:404px">
+        <span class="zdot"></span>
+        <b>2035</b>
+        <span class="zflag">target</span>
+        <h3>Everyone's electricity</h3>
+        <p>100% renewable electricity community-wide: every home and every business, not just county buildings.</p>
+      </div>
+      <div class="zstop" style="left:75%;top:584px">
+        <span class="zdot"></span>
+        <b>2050</b>
+        <span class="zflag">target</span>
+        <h3>Carbon neutral county</h3>
+        <p>Whatever Arlington still emits, it balances out. That's about one roof replacement away.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FORK IN THE ROAD ============ -->
+<section id="involved">
+  <div class="wrap">
+    <div class="trail flip" aria-hidden="true"><svg viewBox="0 0 300 150" fill="none"><path d="M96 6 C210 22 236 48 150 72 C64 96 84 124 148 130" stroke="#7ba58c" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 11"/><path d="M153 129.5 L146 138.8 h4.4 L148.9 147.5 L156 138.2 h-4.4 Z" fill="#e9a13b"/></svg></div>
+    <div class="sec-head center reveal">
+      <h2>What can you do in our community to make a difference?</h2>
+      <p>Three ways in, all real, all local! Follow a road or just read on.</p>
+    </div>
+    <figure class="fork-fig reveal">
+      <svg viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="A road that forks three ways: at home, around town, and in the room">
+        <!-- meadow -->
+        <ellipse cx="500" cy="480" rx="480" ry="70" fill="#e5ecd8"/>
+        <ellipse cx="190" cy="250" rx="150" ry="56" fill="#e9efdb"/>
+        <ellipse cx="820" cy="240" rx="150" ry="56" fill="#e9efdb"/>
+        <!-- sun -->
+        <circle cx="912" cy="66" r="24" fill="#e9a13b"/>
+        <g stroke="#e9a13b" stroke-width="2.2" stroke-linecap="round">
+          <path d="M912 30v-8M912 110v-8M876 66h-8M948 66h-8M886 40l-6-6M938 40l6-6"/>
+        </g>
+        <!-- roads: edges then surface -->
+        <g stroke="#cdc2a4" stroke-linecap="round" fill="none" stroke-width="62">
+          <path d="M500 555 L500 345"/>
+          <path d="M500 345 C430 275, 320 210, 175 130"/>
+          <path d="M500 345 L500 105"/>
+          <path d="M500 345 C570 275, 680 210, 825 130"/>
+        </g>
+        <g stroke="#e8dfc7" stroke-linecap="round" fill="none" stroke-width="54">
+          <path d="M500 555 L500 345"/>
+          <path d="M500 345 C430 275, 320 210, 175 130"/>
+          <path d="M500 345 L500 105"/>
+          <path d="M500 345 C570 275, 680 210, 825 130"/>
+        </g>
+        <!-- trees -->
+        <g>
+          <circle cx="330" cy="330" r="26" fill="#7fae8c"/><rect x="325" y="348" width="10" height="30" rx="4" fill="#8a6b4a"/>
+          <circle cx="660" cy="322" r="30" fill="#5d9973"/><rect x="654" y="342" width="11" height="34" rx="4" fill="#8a6b4a"/>
+          <circle cx="90" cy="392" r="24" fill="#5d9973"/><rect x="85" y="408" width="10" height="28" rx="4" fill="#8a6b4a"/>
+          <circle cx="915" cy="386" r="26" fill="#7fae8c"/><rect x="910" y="404" width="10" height="30" rx="4" fill="#8a6b4a"/>
+          <circle cx="240" cy="70" r="22" fill="#7fae8c"/><rect x="236" y="84" width="9" height="26" rx="4" fill="#8a6b4a"/>
+        </g>
+        <!-- branch: at home (left) -->
+        <g class="fork-branch" data-road="home">
+          <path class="lane-dash" d="M500 345 C430 275, 320 210, 175 130" stroke="#fdf8ec" stroke-width="4" stroke-linecap="round"/>
+          <text class="road-label" x="150" y="80" text-anchor="middle">At home</text>
+          <path d="M500 345 C430 275, 320 210, 175 130" stroke="transparent" stroke-width="62" stroke-linecap="round"/>
+        </g>
+        <!-- branch: around town (middle) -->
+        <g class="fork-branch" data-road="town">
+          <path class="lane-dash" d="M500 345 L500 105" stroke="#fdf8ec" stroke-width="4" stroke-linecap="round"/>
+          <text class="road-label" x="500" y="62" text-anchor="middle">Around town</text>
+          <path d="M500 345 L500 105" stroke="transparent" stroke-width="62"/>
+        </g>
+        <!-- branch: in the room (right) -->
+        <g class="fork-branch" data-road="room">
+          <path class="lane-dash" d="M500 345 C570 275, 680 210, 825 130" stroke="#fdf8ec" stroke-width="4" stroke-linecap="round"/>
+          <text class="road-label" x="852" y="80" text-anchor="middle">In the room</text>
+          <path d="M500 345 C570 275, 680 210, 825 130" stroke="transparent" stroke-width="62" stroke-linecap="round"/>
+        </g>
+        <!-- base road centerline -->
+        <path class="lane-dash" d="M500 555 L500 345" stroke="#fdf8ec" stroke-width="4" stroke-linecap="round"/>
+        <!-- signpost -->
+        <g>
+          <rect x="551" y="360" width="9" height="110" rx="3" fill="#8a6b4a"/>
+          <polygon points="522,362 596,362 610,375 596,388 522,388" fill="#b98a4e"/>
+          <polygon points="590,394 516,394 502,407 516,420 590,420" fill="#b98a4e"/>
+          <polygon points="522,426 596,426 610,439 596,452 522,452" fill="#b98a4e"/>
+          <g font-family="Nunito Sans,sans-serif" font-size="14" font-weight="700" fill="#fdf6e3">
+            <text x="527" y="380">home</text>
+            <text x="522" y="412">town</text>
+            <text x="527" y="444">room</text>
+          </g>
+        </g>
+        <!-- you are here -->
+        <circle cx="500" cy="512" r="9" fill="#d95d39"/>
+        <circle cx="500" cy="512" r="16" stroke="#d95d39" stroke-width="1.6" opacity=".5"/>
+        <text x="524" y="518" font-family="Nunito Sans,sans-serif" font-size="15" font-style="italic" fill="#8a6b4a">you are here</text>
+      </svg>
+    </figure>
+    <div class="paths reveal">
+      <div class="path-col" data-road="home">
+        <h3>At home</h3>
+        <ul>
+          <li>Get the carts right, it takes one week of habit</li>
+          <li>Book a free AIRE energy coach session</li>
+          <li>Join a Solar Switch group-buy round</li>
+          <li>Swap gas appliances when they die, on your terms</li>
+        </ul>
+      </div>
+      <div class="path-col" data-road="town">
+        <h3>Around town</h3>
+        <ul>
+          <li>Tree plantings, pushing canopy from 35% toward the 40% goal</li>
+          <li>Four Mile Run stream cleanups</li>
+          <li><a href="https://www.ecoactionarlington.org" target="_blank" rel="noopener">EcoAction Arlington</a> volunteer days</li>
+          <li>E-CARE drop-offs every spring and fall</li>
+        </ul>
+      </div>
+      <div class="path-col" data-road="room">
+        <h3>In the room</h3>
+        <ul>
+          <li>County Board hearings and Community Energy Plan updates</li>
+          <li>Civic association energy committees</li>
+          <li>School green teams and the <a href="https://www.apsva.us/advisory-councils/non-instructional-advisory-committees/superintendents-advisory-committee-sustainability/" target="_blank" rel="noopener">APS sustainability committee</a></li>
+          <li>Public comment is open to everyone, use it</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONSULTING ============ -->
+<section class="tint">
+  <div class="wrap" style="text-align:center;max-width:720px">
+    <div class="reveal">
+      <h2>Need a plan for your own roof?</h2>
+      <p style="color:var(--soft);margin-bottom:26px">Tanner reviews solar quotes, models payback, and builds electrification roadmaps for homes, boards, and congregations. He also designs climate and clean energy programs for schools. Independent, no sales, no commissions.</p>
+      <div class="btn-row">
+        <a class="btn" href="consulting.html">See the consulting page</a>
+        <a class="tlink" href="consulting.html#contact">or book the free intro call</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIGNUP ============ -->
+<section>
+  <div class="wrap" style="text-align:center;max-width:640px">
+    <div class="reveal">
+      <h2>One email a month</h2>
+      <p style="color:var(--soft);margin-bottom:24px">Co-op deadlines, cart rule changes, E-CARE dates, and one thing worth doing that weekend. That's the whole pitch!</p>
+      <form class="signup" onsubmit="event.preventDefault();this.querySelector('button').textContent='Thanks!';">
+        <input type="email" placeholder="you@example.com" aria-label="Email address" required>
+        <button class="btn" type="submit">Sign up<svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px"><path d="M13.5 2.8L5.8 13.2h4.1l-1.4 8 7.7-10.4h-4.1z"/></svg></button>
+      </form>
+      <p class="small-note" style="margin-top:12px">Starter form, not wired up yet. Connect a newsletter tool.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding:26px 0 10px">
+  <div class="wrap" style="text-align:center">
+    <svg viewBox="0 0 24 24" style="width:16px;height:16px;display:block;margin:0 auto 8px" aria-hidden="true"><path d="M13.5 2.8L5.8 13.2h4.1l-1.4 8 7.7-10.4h-4.1z" fill="#e9a13b"/></svg>
+    <p style="font-family:var(--serif);font-size:1.2rem;color:var(--green-deep)">More coming soon!</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html" style="text-decoration:none">
+          <svg viewBox="0 0 40 40" fill="none" style="width:32px;height:32px">
+            <circle cx="20" cy="22" r="9" fill="#e9a13b"/>
+        <polygon points="22,16.5 16,23.5 19.3,23.5 18,27.5 24,20.5 20.7,20.5" fill="#faf6ec"/>
+            <g stroke="#e9a13b" stroke-width="2" stroke-linecap="round">
+              <path d="M20 7v4M9 11l2.8 2.8M31 11l-2.8 2.8M5 22h4M31 22h4"/>
+            </g>
+            <path d="M8 33c8-5 16-5 24 0" stroke="#c9deb9" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span class="brand-name">Prime Green<small>at Arlington</small></span>
+        </a>
+        <p>A community hub for clean energy, recycling, and climate work across Arlington County, Virginia, plus independent consulting for the parts you'd rather not figure out alone.</p>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="#solar">Solar</a></li>
+          <li><a href="#map">The Map</a></li>
+          <li><a href="#recycling">Recycling</a></li>
+          <li><a href="#schools">Schools</a></li>
+          <li><a href="consulting.html">Consulting</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Official resources</h4>
+        <ul>
+          <li><a href="https://www.arlingtonva.us/Government/Programs/Sustainability" target="_blank" rel="noopener">Arlington County Sustainability</a></li>
+          <li><a href="https://www.arlingtonva.us/Government/Programs/Sustainability/AIRE" target="_blank" rel="noopener">AIRE / Home Energy Hub</a></li>
+          <li><a href="https://www.arlingtonva.us/Government/Programs/Recycling-and-Trash" target="_blank" rel="noopener">Recycling and Trash</a></li>
+          <li><a href="https://www.apsva.us" target="_blank" rel="noopener">Arlington Public Schools</a></li>
+          <li><a href="https://www.apsva.us/advisory-councils/non-instructional-advisory-committees/superintendents-advisory-committee-sustainability/" target="_blank" rel="noopener">APS Sustainability Committee</a></li>
+          <li><a href="https://www.ecoactionarlington.org" target="_blank" rel="noopener">EcoAction Arlington</a></li>
+          <li><a href="https://www.solarempoweredschools.com" target="_blank" rel="noopener">Solar Empowered Schools</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="consulting.html#contact">Consulting inquiries</a></li>
+          <li><a href="#">hello@primegreen.example</a></li>
+          <li><a href="#">Suggest a map site</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>Prime Green at Arlington is a community project, not an official county site.</span>
+      <span>Starter template. Swap in real links and contacts.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---------- reveal on scroll ----------
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// ---------- map ----------
+const KINDS={
+  base:{label:'Home base',color:'#d95d39'},
+  energy:{label:'Energy',color:'#2e7d4f'},
+  school:{label:'Schools',color:'#54889f'},
+  recycling:{label:'Recycling',color:'#e9a13b'},
+  nature:{label:'Nature',color:'#8b6fc9'},
+  events:{label:'Events',color:'#c66d84'}
+};
+const SITES=[
+  {name:'Rosslyn / home base',kind:'base',x:699.9,y:360.4,note:'Where Prime Green lives. The rest of the county is a short bike ride away.'},
+  {name:'Discovery Elementary',kind:'school',x:244.7,y:304.8,note:'Net zero since 2015. About 1,700 rooftop panels and a geothermal field under the play area.'},
+  {name:'Alice West Fleet Elementary',kind:'school',x:371.2,y:503.1,note:'The second APS net zero school, opened 2019, solar delivered through a power purchase agreement.'},
+  {name:'Cardinal Elementary',kind:'school',x:244.7,y:428.8,note:'Net zero school number three, opened 2021 in Westover.'},
+  {name:'Wakefield High School',kind:'school',x:465,y:744.1,note:'90 kW of rooftop solar plus geothermal, and the usual host of E-CARE drop-off events.'},
+  {name:'Central Library',kind:'energy',x:468.3,y:437.3,note:'A 60 kW rooftop array that shaves the library’s peak daytime demand.'},
+  {name:'Water Pollution Control Plant',kind:'energy',x:819,y:804.8,note:'The Re-Gen upgrade will capture biogas and feed it back into the gas pipeline as renewable natural gas.'},
+  {name:'Metropolitan Park / HQ2',kind:'energy',x:822.3,y:701.4,note:'Amazon’s all-electric campus, billed as the largest LEED v4 Platinum building in the world.'},
+  {name:'Trades Center',kind:'recycling',x:524.2,y:800.5,note:'Year-round drop-off for glass, hazardous materials, and mulch pickup.'},
+  {name:'Aurora Hills drop-off',kind:'recycling',x:763.7,y:703.1,note:'One of the purple glass bins. The glass is crushed into sand and gravel for construction.'},
+  {name:'Potomac Overlook Park',kind:'nature',x:461.7,y:215.1,note:'Nature center with an energy exhibit hall, up in the woods above the river.'},
+  {name:'Long Branch Nature Center',kind:'nature',x:362.5,y:659.5,note:'Woodland programs in Glencarlyn Park, along the Four Mile Run valley.'},
+  {name:'Courthouse Farmers Market',kind:'events',x:602.7,y:412.5,note:'Saturday farmers market by the Courthouse Metro, every week of the year.'},
+  {name:'Lubber Run Community Center',kind:'events',x:469,y:528.7,note:'Rebuilt community center in the park, with a summer amphitheater season next door.'},
+  {name:'Thomas Jefferson Community Center',kind:'events',x:491,y:554.4,note:'Home of the Arlington County Fair every August.'}
+];
+const VB={w:1000,h:973.5};
+const svg=document.getElementById('mapSvg');
+const markers=document.getElementById('markers');
+const tip=document.getElementById('mapTip');
+const list=document.getElementById('siteList');
+const NS='http://www.w3.org/2000/svg';
+let view={x:0,y:0,w:VB.w,h:VB.h};
+
+SITES.forEach((s,i)=>{
+  const g=document.createElementNS(NS,'g');
+  g.setAttribute('class','mk');
+  g.dataset.i=i;g.dataset.kind=s.kind;
+  const c=KINDS[s.kind].color;
+  const ring=document.createElementNS(NS,'circle');
+  ring.setAttribute('class','ring');
+  ring.setAttribute('cx',s.x);ring.setAttribute('cy',s.y);ring.setAttribute('r',13);
+  ring.setAttribute('fill','none');ring.setAttribute('stroke',c);ring.setAttribute('stroke-width','1.4');
+  ring.style.animationDelay=(i*.22)+'s';
+  const dot=document.createElementNS(NS,'path');
+  dot.setAttribute('class','dot');
+  dot.setAttribute('d',s.kind==='base'
+    ?'M0 -12.5 L3.1 -4.3 L11.9 -3.9 L5 1.6 L7.4 10.1 L0 5.3 L-7.4 10.1 L-5 1.6 L-11.9 -3.9 L-3.1 -4.3 Z'
+    :'M3.8 -11.5 L-6.7 .8 h5 L-3.8 11.5 L6.7 -.8 h-5 Z');
+  dot.setAttribute('transform',`translate(${s.x} ${s.y})`);
+  dot.setAttribute('fill',c);dot.setAttribute('stroke','#fff');dot.setAttribute('stroke-width','1.8');
+  dot.setAttribute('stroke-linejoin','round');
+  const hit=document.createElementNS(NS,'circle');
+  hit.setAttribute('cx',s.x);hit.setAttribute('cy',s.y);hit.setAttribute('r',18);
+  hit.setAttribute('fill','transparent');
+  g.append(ring,dot,hit);
+  markers.append(g);
+});
+
+// side list grouped by kind
+const ORDER=['base','energy','school','recycling','nature','events'];
+ORDER.forEach(k=>{
+  const head=document.createElement('div');
+  head.className='sl-group';
+  head.innerHTML=`<i style="background:${KINDS[k].color}"></i>${KINDS[k].label}`;
+  list.append(head);
+  SITES.forEach((s,i)=>{
+    if(s.kind!==k)return;
+    const it=document.createElement('div');
+    it.className='sl-item';it.dataset.i=i;it.dataset.kind=k;
+    it.innerHTML=`<b>${s.name}</b><span>${s.note}</span>`;
+    list.append(it);
+  });
+});
+
+function showTip(i){
+  const s=SITES[i];
+  tip.querySelector('b').textContent=s.name;
+  tip.querySelector('span').textContent=s.note;
+  const r=svg.getBoundingClientRect();
+  tip.style.left=((s.x-view.x)/view.w*r.width)+'px';
+  tip.style.top=((s.y-view.y)/view.h*r.height)+'px';
+  tip.classList.add('show');
+}
+function hideTip(){tip.classList.remove('show')}
+function setActive(i,on){
+  const mk=markers.querySelector(`.mk[data-i="${i}"]`);
+  const it=list.querySelector(`.sl-item[data-i="${i}"]`);
+  if(mk)mk.classList.toggle('on',on);
+  if(it)it.classList.toggle('on',on);
+  if(on)showTip(i);else hideTip();
+}
+markers.addEventListener('pointerover',e=>{const g=e.target.closest('.mk');if(g)setActive(+g.dataset.i,true)});
+markers.addEventListener('pointerout',e=>{const g=e.target.closest('.mk');if(g)setActive(+g.dataset.i,false)});
+list.addEventListener('pointerover',e=>{const it=e.target.closest('.sl-item');if(it)setActive(+it.dataset.i,true)});
+list.addEventListener('pointerout',e=>{const it=e.target.closest('.sl-item');if(it)setActive(+it.dataset.i,false)});
+
+// kind filters
+const filters=document.getElementById('mapFilters');
+const mkBtn=(k,label,color)=>{
+  const b=document.createElement('button');
+  b.className='mf'+(k==='all'?' on':'');
+  b.dataset.k=k;
+  b.innerHTML=(color?`<i style="background:${color}"></i>`:'')+label;
+  b.onclick=()=>{
+    filters.querySelectorAll('.mf').forEach(x=>x.classList.toggle('on',x.dataset.k===k));
+    markers.querySelectorAll('.mk').forEach(m=>m.classList.toggle('dim',k!=='all'&&m.dataset.kind!==k));
+    list.querySelectorAll('.sl-item').forEach(x=>x.classList.toggle('hide',k!=='all'&&x.dataset.kind!==k));
+  };
+  filters.append(b);
+};
+mkBtn('all','All');
+ORDER.forEach(k=>mkBtn(k,KINDS[k].label,KINDS[k].color));
+
+// ---------- map zoom + pan ----------
+const mapBoxEl=document.getElementById('mapBox');
+function applyView(){svg.setAttribute('viewBox',view.x+' '+view.y+' '+view.w+' '+view.h);mapBoxEl.classList.toggle('zoomed',view.w<VB.w-1)}
+function clampView(){
+  view.w=Math.min(VB.w,Math.max(VB.w/6,view.w));view.h=view.w*(VB.h/VB.w);
+  view.x=Math.max(0,Math.min(VB.w-view.w,view.x));
+  view.y=Math.max(0,Math.min(VB.h-view.h,view.y));
+}
+function zoomBy(f,cx,cy){
+  cx=cx===undefined?view.x+view.w/2:cx;cy=cy===undefined?view.y+view.h/2:cy;
+  const nw=Math.min(VB.w,Math.max(VB.w/6,view.w*f));
+  const k=nw/view.w;
+  view={x:cx-(cx-view.x)*k,y:cy-(cy-view.y)*k,w:nw,h:nw*(VB.h/VB.w)};
+  clampView();applyView();hideTip();
+}
+document.getElementById('zin').onclick=()=>zoomBy(1/1.5);
+document.getElementById('zout').onclick=()=>zoomBy(1.5);
+document.getElementById('zhome').onclick=()=>{view={x:0,y:0,w:VB.w,h:VB.h};applyView()};
+svg.addEventListener('dblclick',e=>{
+  const r=svg.getBoundingClientRect();
+  zoomBy(1/1.8,view.x+(e.clientX-r.left)/r.width*view.w,view.y+(e.clientY-r.top)/r.height*view.h);
+});
+let drag=null;
+svg.addEventListener('pointerdown',e=>{
+  if(view.w>=VB.w-1)return;
+  drag={px:e.clientX,py:e.clientY,vx:view.x,vy:view.y};
+  mapBoxEl.classList.add('dragging');
+  svg.setPointerCapture(e.pointerId);
+});
+svg.addEventListener('pointermove',e=>{
+  if(!drag)return;
+  const r=svg.getBoundingClientRect();
+  view.x=drag.vx-(e.clientX-drag.px)/r.width*view.w;
+  view.y=drag.vy-(e.clientY-drag.py)/r.height*view.h;
+  clampView();applyView();
+});
+['pointerup','pointercancel'].forEach(ev=>svg.addEventListener(ev,()=>{drag=null;mapBoxEl.classList.remove('dragging')}));
+
+// ---------- fork hover link ----------
+document.querySelectorAll('.fork-branch').forEach(a=>{
+  const road=a.dataset.road;
+  const col=document.querySelector(`.path-col[data-road="${road}"]`);
+  a.addEventListener('pointerenter',()=>{a.classList.add('lit');col&&col.classList.add('lit')});
+  a.addEventListener('pointerleave',()=>{a.classList.remove('lit');col&&col.classList.remove('lit')});
+  a.addEventListener('click',()=>{
+    col&&col.scrollIntoView({behavior:'smooth',block:'center'});
+    col&&col.classList.add('lit');
+    setTimeout(()=>col&&col.classList.remove('lit'),1600);
+  });
+});
+document.querySelectorAll('.path-col').forEach(c=>{
+  const road=c.dataset.road;
+  const br=document.querySelector(`.fork-branch[data-road="${road}"]`);
+  c.addEventListener('pointerenter',()=>br&&br.classList.add('lit'));
+  c.addEventListener('pointerleave',()=>br&&br.classList.remove('lit'));
+});
+
+// ---------- mobile nav ----------
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.querySelector('.nav-links').classList.remove('open')));
+</script>
+</body>
+</html>
