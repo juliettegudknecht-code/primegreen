@@ -110,6 +110,7 @@ body.intro-lock{overflow:hidden}
 .dash .dcell b{display:block;font-family:var(--serif);font-size:1.5rem;color:var(--green-deep)}
 .dash .dcell small{font-size:.8rem;color:var(--soft)}
 .dash figcaption{margin:0 0 14px;font-style:italic;font-size:.85rem;color:var(--faint);text-align:center}
+.dash .proto{display:block;font-family:var(--serif);font-style:normal;font-size:1.8rem;color:var(--sun);margin-bottom:2px}
 
 /* ---------- zigzag timeline ---------- */
 .zig{position:relative;height:720px;max-width:900px;margin:0 auto}
@@ -169,10 +170,9 @@ body.intro-lock{overflow:hidden}
 <script>
 (function(){
   const el=document.getElementById('intro');
-  if(sessionStorage.getItem('primeIntro')||matchMedia('(prefers-reduced-motion: reduce)').matches){el.remove();return}
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.remove();return}
   document.body.classList.add('intro-lock');
   const NS='http://www.w3.org/2000/svg';
-let view={x:0,y:0,w:VB.w,h:VB.h};
   const grid=document.getElementById('introGrid');
   const cells=[];
   for(let r=0;r<4;r++)for(let c=0;c<6;c++){
@@ -187,7 +187,6 @@ let view={x:0,y:0,w:VB.w,h:VB.h};
   const T=1500,t0=performance.now();let done=false;
   function finish(){
     if(done)return;done=true;
-    try{sessionStorage.setItem('primeIntro','1')}catch(e){}
     el.classList.add('done');document.body.classList.remove('intro-lock');
     setTimeout(()=>el.remove(),800);
   }
@@ -452,7 +451,7 @@ let view={x:0,y:0,w:VB.w,h:VB.h};
     <div class="trail flip" aria-hidden="true"><svg viewBox="0 0 300 150" fill="none"><path d="M96 6 C210 22 236 48 150 72 C64 96 84 124 148 130" stroke="#7ba58c" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 11"/><path d="M153 129.5 L146 138.8 h4.4 L148.9 147.5 L156 138.2 h-4.4 Z" fill="#e9a13b"/></svg></div>
     <div class="school-feat">
       <figure class="dash reveal">
-        <figcaption>Prototype sketch with made-up curves, not real data. Swap in a live school dashboard later.</figcaption>
+        <figcaption><span class="proto">Prototype</span>Sketch with made-up curves, not real data. Swap in a live school dashboard later.</figcaption>
         <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg" fill="none">
           <g stroke="#eee7d3">
             <path d="M10 46h460M10 90h460M10 134h460M10 178h460"/>
